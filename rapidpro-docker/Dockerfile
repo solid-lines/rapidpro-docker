@@ -52,7 +52,6 @@ COPY settings_common.py /rapidpro/temba/
 COPY stack/500.html /rapidpro/templates/
 COPY stack/init_db.sql /rapidpro/
 COPY stack/clear-compressor-cache.py /rapidpro/
-COPY /rapidpro/env/static/ ../data/sitestatic/
 
 EXPOSE 8000
 COPY stack/startup.sh /
