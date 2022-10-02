@@ -153,9 +153,9 @@ EOF
 # Send error output and exit with status code 1
 function errout {
   echo "ERROR: $*, exiting..." >&2
-  echo "========================================================="
-  find . -type f -exec sed -ir 's/$HOSTNAME/HOST_NAME/g' {} \;
+  echo "=========================================================
   docker-compose down
+  sed -i 's/$HOSTNAME/HOST_NAME/g' ./rapidpro-docker/settings.py ./rapidpro-docker/settings_common.py .env
   rm -rf /etc/nginx/upstream/rapidpro.conf
   exit 1
 }
