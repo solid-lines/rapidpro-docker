@@ -9,9 +9,9 @@ fi
 if [ "x$CLEAR_COMPRESSOR_CACHE" = "xon" ]; then
 	/rapidpro/env/bin/python clear-compressor-cache.py
 fi
-if [ "x$MANAGEPY_COMPRESS" = "xon" ]; then
-	/rapidpro/env/bin/python manage.py compress --extension=".haml" --force -v0
-fi
+#if [ "x$MANAGEPY_COMPRESS" = "xon" ]; then
+#	/rapidpro/env/bin/python manage.py compress --extension=".haml" --force -v0
+#fi
 /bin/bash -c 'source /rapidpro/env/bin/activate'
 if [ "x$MANAGEPY_INIT_DB" = "xon" ]; then
 	#/rapidpro/env/bin/python manage.py dbshell < init_db.sql
