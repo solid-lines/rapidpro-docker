@@ -11,7 +11,7 @@ services:
       - redis
       - postgresql
     volumes:
-      - ./data/sitestatic:/rapidpro/static
+      - ./data/sitestatic:/rapidpro/sitestatic
       - ./logs/rapidpro:/var/log/rapidpro
     links:
       - redis
