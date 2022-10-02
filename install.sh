@@ -166,6 +166,13 @@ if [ $# -ne 1 ]; then
 fi
 
 HOSTNAME="$1"
+echo "Installing docker and docker-compose"
+apt update && apt install docker docker-compose jq unzip sendmail -y
+if [ ! -f .env ]
+then
+    cp sample.env .env
+fi
+
 echo "Setting hostname: $HOSTNAME"
 sed -i 's/HOST_NAME/$HOSTNAME/g' ./rapidpro-docker/settings.py ./rapidpro-docker/settings_common.py .env
 
