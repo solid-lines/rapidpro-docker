@@ -70,7 +70,7 @@ RUN mkdir -p /var/log/rapidpro
 RUN ln -sf /dev/stdout /var/log/rapidpro/rapidpro.log \
     && ln -sf /dev/stderr /var/log/rapidpro/rapidpro.error
 
-RUN chown -R rapidpro:rapidpro /rapidpro
-USER rapidpro
+#RUN chown -R rapidpro:rapidpro /rapidpro
+#USER rapidpro
 CMD ["/startup.sh"]
 
