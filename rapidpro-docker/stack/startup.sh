@@ -1,7 +1,7 @@
 #!/bin/sh
 set -ex # fail on any error & print commands as they're run
 
-cp /rapidpro/env/static/*.* /rapidpro/env/sitestatic/*.*
+#cp /rapidpro/env/static/*.* /rapidpro/env/sitestatic/*.*
 
 if [ "x$MANAGEPY_COLLECTSTATIC" = "xon" ]; then
 	/rapidpro/env/bin/python manage.py collectstatic --noinput --no-post-process
