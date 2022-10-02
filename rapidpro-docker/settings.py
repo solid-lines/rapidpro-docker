@@ -114,5 +114,5 @@ warnings.filterwarnings(
 # -----------------------------------------------------------------------------------
 STATIC_URL = "/sitestatic/"
 
-CSRF_TRUSTED_ORIGINS = ["https://rapidpro.moh2.solidlines.io"]
+CSRF_TRUSTED_ORIGINS = ["https://HOST_NAME"]
 
