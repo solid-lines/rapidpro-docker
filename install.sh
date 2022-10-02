@@ -126,7 +126,7 @@ function install_upstream {
 		}
 
 		location /sitestatic/ {
-		  root  ./data;
+		  root  $pwd/data;
 		  expires  max;
 	    }
 
