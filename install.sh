@@ -193,13 +193,17 @@ fi
 if ! which certbot 1>/dev/null; then
   sudo snap install --classic certbot
   sudo ln -s /snap/bin/certbot /usr/bin/certbot
+  service nginx stop
   if ! certbot certonly -d $HOSTNAME --standalone -m daniel.castelao@solidlines.io --agree-tos -n --no-eff-email; then
     errout "Failed when installing certificate"
   fi
+  service nginx start
 else
+  service nginx stop
   if ! certbot certonly -d $HOSTNAME --standalone -m daniel.castelao@solidlines.io --agree-tos -n --no-eff-email; then
     errout "Failed when installing certificate"
   fi
+  service nginx start
 fi
 
 echo "Successfully installed rapidpro. Create superuser executing ./createsuperuser.sh"
