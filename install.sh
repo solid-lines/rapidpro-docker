@@ -2,7 +2,7 @@
 
 function install_nginx {
 cat <<EOF > /etc/nginx/nginx.conf
-	user   nginx;
+	user   www-data;
 	worker_processes  auto;
 
 	error_log  /var/log/nginx/error.log info;
@@ -39,7 +39,7 @@ cat <<EOF > /etc/nginx/nginx.conf
 		}
 	  }
 
-	  include upstream/*.conf
+	  include upstream/*.conf;
 	}
 EOF
 
