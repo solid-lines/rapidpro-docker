@@ -8,3 +8,6 @@ Run: ./install.sh \<HOSTNAME\>
 4. Update Nginx configuration files
   
 To create a superuser run: ./createsuperuser.sh
+
+
+![docker-compose-rapidpro yml](https://user-images.githubusercontent.com/48926694/193571380-2396d509-ab28-412c-b386-c2f5ee526cec.png)
