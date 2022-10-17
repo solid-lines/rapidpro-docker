@@ -1,7 +1,7 @@
-# nginx-proxy to nginx, to rapidpro
 version: "3"
 services:
   rapidpro:
+    restart: always
     image: rapidpro:${RAPIDPRO_VERSION:-v7.4.2}
     build:
       context: ./rapidpro-docker
@@ -61,6 +61,7 @@ services:
     ports:
       - 8000:8000
   celery_base:
+    restart: always
     image: rapidpro:${RAPIDPRO_VERSION:-v7.4.2}
     depends_on:
       - rapidpro
@@ -89,6 +90,7 @@ services:
       - API_THROTTLE_V2_BROADCASTS=${API_THROTTLE_V2_BROADCAST:-2500/hour}
     command: ["/rapidpro/env/bin/celery", "--app=temba", "worker", "--loglevel=ERROR", "--queues=celery,flows"]
   celery_msgs:
+    restart: always
     image: rapidpro:${RAPIDPRO_VERSION:-v7.4.2}
     depends_on:
       - rapidpro
@@ -118,9 +120,11 @@ services:
     command: ["/rapidpro/env/bin/celery", "--app=temba", "worker", "--loglevel=ERROR", "--queues=msgs,handler"]
 
   redis:
+    restart: always
     image: redis:alpine
 
   postgresql:
+    restart: always
     image: mdillon/postgis:11
     environment:
       - POSTGRES_DB=temba
@@ -128,6 +132,7 @@ services:
       - ./data/postgres:/var/lib/postgresql/data
 
   mailroom:
+    restart: always
     image: mailroom:${MAILROOM_VERSION:-6.2.3}
     build:
       context: ./mailroom-docker
@@ -157,6 +162,7 @@ services:
       - 8090:8090
 
   courier:
+    restart: always
     image: courier:${COURIER_VERSION:-6.2.0}
     build:
       context: ./courier-docker
