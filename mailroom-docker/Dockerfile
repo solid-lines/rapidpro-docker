@@ -6,7 +6,7 @@ RUN set -ex; \
 
 # Install ca-certificates so HTTPS works in general
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends ca-certificates && \
+    apt-get install -y --no-install-recommends nano ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
 ARG MAILROOM_REPO
