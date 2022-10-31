@@ -20,7 +20,7 @@ RUN set -ex; \
 
 # Install ca-certificates so HTTPS works in general
 RUN apt-get update && \
-  apt-get install -y --no-install-recommends vim net-tools iputils-ping procps ca-certificates && \
+  apt-get install -y --no-install-recommends vim nano net-tools iputils-ping procps ca-certificates && \
   rm -rf /var/lib/apt/lists/*
 
 COPY --from=build courier/courier /usr/local/bin
