@@ -14,7 +14,7 @@ RUN addgroup --system rapidpro; \
 # `pcre` is needed for uwsgi
 # `geos`, `gdal`, and `proj` are needed for `manage.py download_geojson` and `manage.py import_geojson`
 # `npm` for static file generation
-RUN apt update && apt install postgresql-client libmagic-dev libpcre3 libgeos-c1v5 libgdal28 libproj19 bzip2 npm wget tar git software-properties-common bash-completion python3-virtualenv python3-dev python3-distutils python3-apt vim net-tools iputils-ping procps -y
+RUN apt update && apt install postgresql-client libmagic-dev libpcre3 libgeos-c1v5 libgdal28 libproj19 bzip2 npm wget tar git nano software-properties-common bash-completion python3-virtualenv python3-dev python3-distutils python3-apt vim net-tools iputils-ping procps -y
 
 WORKDIR /
 
