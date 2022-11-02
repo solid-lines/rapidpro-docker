@@ -157,4 +157,5 @@ if ! which nginx 1>/dev/null; then
 else
   install_upstream
 fi
+service nginx start
 echo "Successfully installed rapidpro. Create superuser executing ./createsuperuser.sh"
