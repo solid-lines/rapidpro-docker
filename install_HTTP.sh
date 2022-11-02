@@ -134,22 +134,22 @@ if [ $# -ne 1 ]; then
 fi
 
 HOSTNAME="$1"
-echo "Installing docker and docker-compose"
+echo "Installing docker and docker-compose..."
 apt update && apt install docker docker-compose jq unzip sendmail -y
 if [ ! -f .env ]
 then
     cp sample.env .env
 fi
 
-echo "Setting hostname: $HOSTNAME"
+echo "Setting hostname: $HOSTNAME ..."
 sed -i "s/HOST_NAME/$HOSTNAME/g" ./rapidpro-docker/settings.py ./rapidpro-docker/settings_common.py .env
 
-echo "Building and creating docker containers"
+echo "Building and creating docker containers..."
 if ! docker-compose up --build -d; then
   errout "Failed docker-compose" 1>&2
 fi
 
-echo "Configuring nginx"
+echo "Configuring Nginx..."
 if ! which nginx 1>/dev/null; then
   apt update && apt install nginx -y
   install_nginx
@@ -158,4 +158,12 @@ else
   install_upstream
 fi
 service nginx start
+
+echo "Installing NodeJS..."
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+apt update && apt install nodejs -y
+echo "Installing PM2..."
+npm install pm2@latest -g
+env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u root --hp /opt
+
 echo "Successfully installed rapidpro. Create superuser executing ./createsuperuser.sh"
