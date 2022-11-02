@@ -164,6 +164,6 @@ curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 apt update && apt install nodejs -y
 echo "Installing PM2..."
 npm install pm2@latest -g
-env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u root --hp /opt
+env PATH=$PATH:/usr/bin /usr/local/lib/node_modules/pm2/bin/pm2 startup systemd -u root --hp /opt
 
 echo "Successfully installed rapidpro. Create superuser executing ./createsuperuser.sh"
