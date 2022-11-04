@@ -59,8 +59,6 @@ services:
       - API_THROTTLE_V2_RUNS=${API_THROTTLE_V2_RUNS:-2500/hour}
       - API_THROTTLE_V2_API=${API_THROTTLE_V2_API:-2500/hour}
       - API_THROTTLE_V2_BROADCASTS=${API_THROTTLE_V2_BROADCAST:-2500/hour}
-    ports:
-      - 8000:8000
     networks:
       - HOST_NAME
   celery_base_HOST_NAME:
@@ -174,8 +172,6 @@ services:
       - MAILROOM_S3_MEDIA_BUCKET=${MAILROOM_S3_MEDIA_BUCKET:-mailroom}
       - MAILROOM_AUTH_TOKEN=${MAILROOM_AUTH_TOKEN:-changeme}
       - MAILROOM_LOG_LEVEL=${MAILROOM_LOG_LEVEL:-error}
-    ports:
-      - 8090:8090
     networks:
       - HOST_NAME
 
@@ -206,8 +202,6 @@ services:
       - COURIER_S3_MEDIA_PREFIX=courier
       - COURIER_S3_MEDIA_BUCKET=${COURIER_S3_MEDIA_BUCKET:-changeme}
       - COURIER_LOG_LEVEL=${COURIER_LOG_LEVEL:-error}
-    ports:
-      - 8081:8081
     networks:
       - HOST_NAME
       
