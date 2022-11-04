@@ -25,7 +25,7 @@ RUN apt-get update && \
 
 COPY --from=build courier/courier /usr/local/bin
 
-EXPOSE 8080
+EXPOSE 8081
 
 RUN mkdir _storage && chown courier _storage
 RUN mkdir /var/spool/courier && chown courier /var/spool/courier
