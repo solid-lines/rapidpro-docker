@@ -20,10 +20,10 @@ WORKDIR /
 
 ARG RAPIDPRO_VERSION
 ARG RAPIDPRO_REPO
-ENV RAPIDPRO_VERSION=${RAPIDPRO_VERSION:-v7.4.2}
+ENV RAPIDPRO_VERSION=${RAPIDPRO_VERSION:-7.4.2}
 ENV RAPIDPRO_REPO=${RAPIDPRO_REPO:-rapidpro/rapidpro}
-RUN echo "Downloading RapidPro ${RAPIDPRO_VERSION} from https://github.com/rapidpro/rapidpro.git" && \
-    git clone --depth 1 --branch v7.4.2 https://github.com/rapidpro/rapidpro.git
+RUN echo "Downloading RapidPro v${RAPIDPRO_VERSION} from https://github.com/rapidpro/rapidpro.git" && \
+    git clone --depth 1 --branch v${RAPIDPRO_VERSION} https://github.com/rapidpro/rapidpro.git
 
 WORKDIR /rapidpro
 
