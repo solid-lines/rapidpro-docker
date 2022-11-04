@@ -962,7 +962,7 @@ _default_database_config = {
     "NAME": "temba",
     "USER": "temba",
     "PASSWORD": "temba",
-    "HOST": "postgresql",
+    "HOST": "postgresql_HOST_NAME",
     "PORT": "5432",
     "ATOMIC_REQUESTS": True,
     "CONN_MAX_AGE": 60,
