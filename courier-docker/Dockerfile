@@ -3,7 +3,7 @@ FROM debian:bullseye-slim as build
 ARG COURIER_REPO
 ENV COURIER_REPO=${COURIER_REPO:-nyaruka/courier}
 ARG COURIER_VERSION
-ENV COURIER_VERSION=${COURIER_VERSION:-6.2.0}
+ENV COURIER_VERSION=${COURIER_VERSION:-7.4.0}
 
 RUN apt update && apt install -y wget
 RUN echo "wget -q -O courier.tar.gz https://github.com/$COURIER_REPO/releases/download/v${COURIER_VERSION}/courier_${COURIER_VERSION}_linux_amd64.tar.gz"
