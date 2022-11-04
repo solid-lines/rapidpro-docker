@@ -67,7 +67,7 @@ services:
     restart: always
     image: rapidpro:${RAPIDPRO_VERSION:-v7.4.2}
     depends_on:
-      - rapidpro
+      - rapidpro_HOST_NAME
     links:
       - redis_HOST_NAME
       - postgresql_HOST_NAME
@@ -98,7 +98,7 @@ services:
     restart: always
     image: rapidpro:${RAPIDPRO_VERSION:-v7.4.2}
     depends_on:
-      - rapidpro
+      - rapidpro_HOST_NAME
     links:
       - redis_HOST_NAME
       - postgresql_HOST_NAME
