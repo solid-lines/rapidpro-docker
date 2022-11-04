@@ -2,11 +2,11 @@ version: "3"
 services:
   rapidpro:
     restart: always
-    image: rapidpro:${RAPIDPRO_VERSION:-v7.4.2}
+    image: rapidpro:${RAPIDPRO_VERSION:-7.4.2}
     build:
       context: ./rapidpro-docker
       args:
-        - RAPIDPRO_VERSION=${RAPIDPRO_VERSION:-v7.4.2}
+        - RAPIDPRO_VERSION=${RAPIDPRO_VERSION:-7.4.2}
     depends_on:
       - redis
       - postgresql
@@ -62,7 +62,7 @@ services:
       - 8000:8000
   celery_base:
     restart: always
-    image: rapidpro:${RAPIDPRO_VERSION:-v7.4.2}
+    image: rapidpro:${RAPIDPRO_VERSION:-7.4.2}
     depends_on:
       - rapidpro
     links:
@@ -91,7 +91,7 @@ services:
     command: ["/rapidpro/env/bin/celery", "--app=temba", "worker", "--loglevel=ERROR", "--queues=celery,flows"]
   celery_msgs:
     restart: always
-    image: rapidpro:${RAPIDPRO_VERSION:-v7.4.2}
+    image: rapidpro:${RAPIDPRO_VERSION:-7.4.2}
     depends_on:
       - rapidpro
     links:
