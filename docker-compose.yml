@@ -188,7 +188,7 @@ services:
       args:
         - COURIER_VERSION=${COURIER_VERSION:-6.2.0}
     depends_on:
-      - rapidpro
+      - rapidpro_HOST_NAME
     links:
       - redis_HOST_NAME
       - postgresql_HOST_NAME
