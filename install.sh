@@ -155,7 +155,7 @@ function errout {
   echo "ERROR: $*, exiting..." >&2
   echo "========================================================="
   docker-compose down
-  sed -i 's/$HOSTNAME/HOST_NAME/g' ./rapidpro-docker/settings.py ./rapidpro-docker/settings_common.py .env
+  sed -i 's/$HOSTNAME/HOST_NAME/g' ./rapidpro-docker/settings.py ./rapidpro-docker/settings_common.py .env ./docker-compose.yml
   rm -rf /etc/nginx/upstream/rapidpro.conf
   exit 1
 }
