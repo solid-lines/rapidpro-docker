@@ -174,7 +174,7 @@ then
 fi
 
 echo "Setting hostname: $HOSTNAME"
-sed -i "s/HOST_NAME/$HOSTNAME/g" ./rapidpro-docker/settings.py ./rapidpro-docker/settings_common.py .env ./docker-compose.yml
+sed -i "s/HOST_NAME/$HOSTNAME/g" ./rapidpro-docker/settings.py ./rapidpro-docker/settings_common.py ./rapidpro-docker/stack/startup.sh .env ./docker-compose.yml
 
 echo "Building and creating docker containers"
 if ! docker-compose up --build -d; then
