@@ -197,6 +197,7 @@ services:
     environment:
       - COURIER_DOMAIN=${RAPIDPRO_HOST:-localhost}
       - COURIER_SPOOL_DIR=/tmp/courier/
+      - COURIER_PORT=8081
       - COURIER_DB=postgres://postgres:temba@postgresql_HOST_NAME/temba?sslmode=disable
       - COURIER_REDIS=redis://redis_HOST_NAME:6379/15
       - COURIER_AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-changeme}
@@ -206,7 +207,7 @@ services:
       - COURIER_S3_MEDIA_BUCKET=${COURIER_S3_MEDIA_BUCKET:-changeme}
       - COURIER_LOG_LEVEL=${COURIER_LOG_LEVEL:-error}
     ports:
-      - 8081:8080
+      - 8081:8081
     networks:
       - HOST_NAME
       
