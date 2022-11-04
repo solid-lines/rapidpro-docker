@@ -104,7 +104,7 @@ function install_upstream {
 	  server {
 		server_name  $HOSTNAME;
 		location / {
-		  proxy_pass        http://localhost:8000;
+		  proxy_pass        http://${RAPIDPRO_IP}:8000;
 	      proxy_set_header   Host \$host;
 		  proxy_set_header   X-Real-IP \$remote_addr;
 		  proxy_set_header   X-Forwarded-For \$proxy_add_x_forwarded_for;
@@ -114,14 +114,14 @@ function install_upstream {
 		# all Mailroom URLs go to Mailroom
 		location ^~ /mr/ {
 		  proxy_set_header Host \$http_host;
-		  proxy_pass http://127.0.0.1:8090;
+		  proxy_pass http://${MAILROOM_IP}:8090;
 		  break;
 		}
 
 		# all courier URLs go to courier
 		location ^~ /c/ {
 		  proxy_set_header Host \$http_host;
-		  proxy_pass http://127.0.0.1:8081;
+		  proxy_pass http://${COURIER_IP}:8081;
 		  break;
 		}
 
@@ -180,6 +180,13 @@ echo "Building and creating docker containers"
 if ! docker-compose up --build -d; then
   errout "Failed docker-compose" 1>&2
 fi
+
+COURIER_ID=$(docker ps | grep courier_rapidpro | awk '{print $1}')
+MAILROOM_ID=$(docker ps | grep courier_rapidpro | awk '{print $1}')
+RAPIDPRO_ID=$(docker ps | grep rapidpro | grep startup | awk '{print $1}')
+COURIER_IP=$docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${COURIER_ID})
+MAILROOM_IP=$docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${MAILROOM_ID})
+RAPIDPRO_IP=$docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${RAPIDPRO_ID})
 
 echo "Configuring nginx"
 if ! which nginx 1>/dev/null; then
