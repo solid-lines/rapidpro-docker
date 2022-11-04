@@ -63,9 +63,10 @@ services:
       - 8000:8000
     networks:
       - HOST_NAME
-  celery_base:
+  celery_base_HOST_NAME:
     restart: always
     image: rapidpro:${RAPIDPRO_VERSION:-v7.4.2}
+    container_name: celery_base_HOST_NAME
     depends_on:
       - rapidpro_HOST_NAME
     links:
@@ -94,9 +95,10 @@ services:
     networks:
       - HOST_NAME
     command: ["/rapidpro/env/bin/celery", "--app=temba", "worker", "--loglevel=ERROR", "--queues=celery,flows"]
-  celery_msgs:
+  celery_msgs_HOST_NAME:
     restart: always
     image: rapidpro:${RAPIDPRO_VERSION:-v7.4.2}
+    container_name: celery_msg_HOST_NAME
     depends_on:
       - rapidpro_HOST_NAME
     links:
