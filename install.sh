@@ -184,15 +184,21 @@ fi
 COURIER_VERSION=$(grep COURIER_VERSION .env |  awk -F '=' '{print $2}')
 echo "COURIER VER:$COURIER_VERSION"
 MAILROOM_VERSION=$(grep MAILROOM_VERSION .env |  awk -F '=' '{print $2}')
+echo "MAILROOM VER:$MAILROOM_VERSION"
 RAPIDPRO_VERSION=$(grep RAPIDPRO_VERSION .env |  awk -F '=' '{print $2}')
+echo "RAPIDPRO VER:$RAPIDPRO_VERSION"
 COURIER_ID=$(docker ps | grep courier:${COURIER_VERSION} | awk '{print $1}')
 echo "COURIER IDR:$COURIER_ID"
 MAILROOM_ID=$(docker ps | grep mailroom::${MAILROOM_VERSION} | awk '{print $1}')
+echo "MAILROOM IDR:$MAILROOM_ID"
 RAPIDPRO_ID=$(docker ps | grep rapidpro:${RAPIDPRO_VERSION} | grep startup | awk '{print $1}')
+echo "RAPIDPRO IDR:$RAPIDPRO_ID"
 COURIER_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${COURIER_ID})
 echo "COURIER IP:$COURIER_IP"
 MAILROOM_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${MAILROOM_ID})
+echo "MAILROOM IP:$MAILROOM_IP"
 RAPIDPRO_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${RAPIDPRO_ID})
+echo "RAPIDPRO IP:$RAPIDPRO_IP"
 
 echo "Configuring nginx"
 if ! which nginx 1>/dev/null; then
