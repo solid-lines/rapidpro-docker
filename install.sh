@@ -189,7 +189,7 @@ RAPIDPRO_VERSION=$(grep RAPIDPRO_VERSION .env |  awk -F '=' '{print $2}')
 echo "RAPIDPRO VER:$RAPIDPRO_VERSION"
 COURIER_ID=$(docker ps | grep courier:${COURIER_VERSION} | awk '{print $1}')
 echo "COURIER IDR:$COURIER_ID"
-MAILROOM_ID=$(docker ps | grep mailroom::${MAILROOM_VERSION} | awk '{print $1}')
+MAILROOM_ID=$(docker ps | grep mailroom:${MAILROOM_VERSION} | awk '{print $1}')
 echo "MAILROOM IDR:$MAILROOM_ID"
 RAPIDPRO_ID=$(docker ps | grep rapidpro:${RAPIDPRO_VERSION} | grep startup | awk '{print $1}')
 echo "RAPIDPRO IDR:$RAPIDPRO_ID"
