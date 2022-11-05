@@ -99,6 +99,7 @@ EOF
 }
 
 function install_upstream {
+        echo "HOSTNAME: ${HOSTNAME}"
 	mkdir -p /etc/nginx/upstream
 	cat <<EOF > /etc/nginx/upstream/$HOSTNAME.conf
 	  server {
@@ -206,6 +207,7 @@ if ! which nginx 1>/dev/null; then
   install_nginx
   install_upstream
 else
+  echo "HOSTNAME: ${HOSTNAME}"
   install_upstream
 fi
 
