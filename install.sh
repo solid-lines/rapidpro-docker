@@ -182,12 +182,15 @@ if ! docker-compose up --build -d; then
 fi
 
 COURIER_VERSION=$(grep COURIER_VERSION .env |  awk -F '=' '{print $2}')
+echo "COURIER VER:$COURIER_VERSION"
 MAILROOM_VERSION=$(grep MAILROOM_VERSION .env |  awk -F '=' '{print $2}')
 RAPIDPRO_VERSION=$(grep RAPIDPRO_VERSION .env |  awk -F '=' '{print $2}')
 COURIER_ID=$(docker ps | grep courier:${COURIER_VERSION} | awk '{print $1}')
+echo "COURIER IDR:$COURIER_ID"
 MAILROOM_ID=$(docker ps | grep mailroom::${MAILROOM_VERSION} | awk '{print $1}')
 RAPIDPRO_ID=$(docker ps | grep rapidpro:${RAPIDPRO_VERSION} | grep startup | awk '{print $1}')
 COURIER_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${COURIER_ID})
+echo "COURIER IP:$COURIER_IP"
 MAILROOM_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${MAILROOM_ID})
 RAPIDPRO_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${RAPIDPRO_ID})
 
