@@ -104,7 +104,7 @@ function install_upstream {
 	  server {
 		server_name  $HOSTNAME;
 		location / {
-		  proxy_pass        http://${RAPIDPRO_IP}:8000;
+		  proxy_pass        http://localhost:8000;
 	      proxy_set_header   Host \$host;
 		  proxy_set_header   X-Real-IP \$remote_addr;
 		  proxy_set_header   X-Forwarded-For \$proxy_add_x_forwarded_for;
@@ -114,14 +114,14 @@ function install_upstream {
 		# all Mailroom URLs go to Mailroom
 		location ^~ /mr/ {
 		  proxy_set_header Host \$http_host;
-		  proxy_pass http://${MAILROOM_IP}:8090;
+		  proxy_pass http://localhost:8090;
 		  break;
 		}
 
 		# all courier URLs go to courier
 		location ^~ /c/ {
 		  proxy_set_header Host \$http_host;
-		  proxy_pass http://${COURIER_IP}:8081;
+		  proxy_pass http://localhost:8081;
 		  break;
 		}
 
