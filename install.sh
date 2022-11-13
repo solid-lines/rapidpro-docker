@@ -167,11 +167,7 @@ fi
 
 HOSTNAME="$1"
 echo "Installing docker and docker-compose"
-apt update && apt install docker docker-compose jq unzip sendmail -y
-if [ ! -f .env ]
-then
-    cp sample.env .env
-fi
+apt update && apt install docker docker-compose jq unzip -y
 
 echo "Setting hostname: $HOSTNAME"
 sed -i "s/HOST_NAME/$HOSTNAME/g" ./rapidpro-docker/settings.py ./rapidpro-docker/settings_common.py ./rapidpro-docker/stack/startup.sh .env ./docker-compose.yml
@@ -216,4 +212,12 @@ else
   service nginx start
 fi
 
+echo "Installing NodeJS..."
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+apt update && apt install nodejs -y
+echo "Installing PM2..."
+npm install pm2@latest -g
+env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u root --hp /opt
+
+echo "Successfully installed rapidpro. Create superuser executing ./createsuperuser.sh"
 echo "Successfully installed rapidpro. Create superuser executing ./createsuperuser.sh"
