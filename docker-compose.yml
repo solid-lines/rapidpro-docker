@@ -1,30 +1,34 @@
-version: "3"
+version: '3.7'
 services:
-  rapidpro_HOST_NAME:
+  rapidpro:
     restart: always
     image: rapidpro:${RAPIDPRO_VERSION:-7.4.2}
-    container_name: rapidpro${RAPIDPRO_VERSION:-7.4.2}_HOST_NAME
+    container_name: rapidpro${RAPIDPRO_VERSION:-7.4.2}_${HOSTNAME:-localhost}
     build:
       context: ./rapidpro-docker
       args:
         - RAPIDPRO_VERSION=${RAPIDPRO_VERSION:-7.4.2}
     depends_on:
-      - redis_HOST_NAME
-      - postgresql_HOST_NAME
+      - redis
+      - postgresql
     volumes:
       - ./data/sitestatic:/rapidpro/sitestatic
       - ./logs/rapidpro:/var/log/rapidpro
     links:
-      - redis_HOST_NAME
-      - postgresql_HOST_NAME
-      - mailroom_HOST_NAME
+      - redis
+      - postgresql
+      - mailroom
     environment:
+      - TESTING=${TESTING:-True}
       - DOMAIN_NAME=${RAPIDPRO_HOST:-localhost}
-      - ALLOWED_HOSTS=${RAPIDPRO_HOST:-localhost}
-      - TEMBA_HOST=${RAPIDPRO_HOST:-localhost}
-      - DJANGO_DEBUG=${DJANGO_DEBUG:-off}
-      - DATABASE_URL=postgresql://postgres:temba@postgresql_HOST_NAME/temba?sslmode=disable
-      - REDIS_URL=redis://redis_HOST_NAME:6379/15
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-[\"localhost\"]}
+      - TEMBA_HOST=${TEMBA_HOST:-localhost}
+      - DEBUG=${DEBUG:-False}
+      - DATABASE_URL=postgresql://postgres:temba@postgresql/temba?sslmode=disable
+      - REDIS_HOST=redis_${HOSTNAME:-localhost}
+      - REDIS_PORT=6379
+      - REDIS_DB=15
+      - REDIS_URL=redis://${REDIS_HOST}:${REDIS_PORT}/${REDIS_DB}
       - SECRET_KEY=${SECRET_KEY:-changeme}
       - CLEAR_COMPRESSOR_CACHE=${CLEAR_COMPRESSOR_CACHE:-off}
       - MANAGEPY_COLLECTSTATIC=${MANAGEPY_COLLECTSTATIC:-off}
@@ -32,137 +36,140 @@ services:
       - MANAGEPY_INIT_DB=${MANAGEPY_INIT_DB:-off}
       - MANAGEPY_MIGRATE=${MANAGEPY_MIGRATE:-on}
       - MANAGEPY_IMPORT_GEOJSON=${MANAGEPY_IMPORT_GEOJSON:-off}
+      - SENTRY_DSN=${SENTRY_DSN}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_ACL=${AWS_DEFAULT_ACL}
+      - AWS_S3_REGION_NAME=${AWS_S3_REGION_NAME}
+      - AWS_BUCKET_DOMAIN=${AWS_BUCKET_DOMAIN}
+      - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
+      - ARCHIVE_BUCKET=${ARCHIVE_BUCKET}
+      - AWS_STATIC=${AWS_STATIC}
+      - AWS_MEDIA=${AWS_MEDIA}
+      - AWS_QUERYSTRING_AUTH=${AWS_QUERYSTRING_AUTH}
       - OSM_RELATION_IDS=${OSM_RELATION_IDS}
       - CDN_DOMAIN_NAME=${CDN_DOMAIN_NAME:-changeme}
       - EMAIL_HOST=${EMAIL_HOST:-example.com}
       - EMAIL_HOST_USER=${EMAIL_HOST_USER:-admin@example.com}
       - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD:-changeme}
       - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL:-admin@example.com}
-      - SEND_EMAILS=${SEND_EMAILS:-off}
-      - SEND_MESSAGES=${SEND_MESSAGES:-off}
-      - SEND_AIRTIME=${SEND_AIRTIME:-off}
-      - SEND_CALLS=${SEND_CALLS:-off}
-      - SEND_WEBHOOKS=${SEND_WEBHOOKS:-off}
+      - EMAIL_USE_TLS=${EMAIL_USE_TLS:-True}
+      - EMAIL_TIMEOUT=${EMAIL_TIMEOUT:-10}
+      - SEND_EMAILS=${SEND_EMAILS:-False}
+      - SEND_RECEIPTS=${SEND_RECEIPTS:-True}
       - DJANGO_COMPRESSOR=${DJANGO_COMPRESSOR:-off}
       - BRANDING_ALLOW_SIGNUPS=${BRANDING_ALLOW_SIGNUPS:-on}
       - BRANDING_API_LINK=${BRANDING_API_LINK}
       - BRANDING_LINK=${BRANDING_LINK}
       - BRANDING_SPLASH=${BRANDING_SPLASH}
-      - IS_PROD=${IS_PROD:-off}
-      - MAILROOM_URL='http://mailroom_HOST_NAME:8090'
+      - MAILROOM_URL='http://mailroom:8090'
       - MAILROOM_AUTH_TOKEN=${MAILROOM_AUTH_TOKEN:-changeme}
       - STORAGE_URL=${STORAGE_URL}
       - FLOW_FROM_EMAIL=${FLOW_FROM_EMAIL}
-      - API_THROTTLE_V2=${API_THROTTLE_V2:-2500/hour}
-      - API_THROTTLE_V2_CONTACTS=${API_THROTTLE_V2_CONTACTS:-2500/hour}
-      - API_THROTTLE_V2_MESSAGES=${API_THROTTLE_V2_MESSAGES:-2500/hour}
-      - API_THROTTLE_V2_RUNS=${API_THROTTLE_V2_RUNS:-2500/hour}
-      - API_THROTTLE_V2_API=${API_THROTTLE_V2_API:-2500/hour}
-      - API_THROTTLE_V2_BROADCASTS=${API_THROTTLE_V2_BROADCAST:-2500/hour}
+      - ELASTICSEARCH_URL=${ELASTICSEARCH_URL}
+      - TWITTER_API_KEY=${TWITTER_API_KEY}
+      - TWITTER_API_SECRET=${TWITTER_API_SECRET}
+      - GOOGLE_TRACKING_ID=${GOOGLE_TRACKING_ID}
+      - MAILGUN_API_KEY=${MAILGUN_API_KEY}
+      - ZENDESK_CLIENT_ID=${ZENDESK_CLIENT_ID}
+      - ZENDESK_CLIENT_SECRET=${ZENDESK_CLIENT_SECRET}
+      - FACEBOOK_APPLICATION_ID=${FACEBOOK_APPLICATION_ID}
+      - FACEBOOK_APPLICATION_SECRET=${FACEBOOK_APPLICATION_SECRET}
+      - FACEBOOK_WEBHOOK_SECRET=${FACEBOOK_WEBHOOK_SECRET}
+      - WHATSAPP_ADMIN_SYSTEM_USER_ID=${WHATSAPP_ADMIN_SYSTEM_USER_ID}
+      - WHATSAPP_ADMIN_SYSTEM_USER_TOKEN=${WHATSAPP_ADMIN_SYSTEM_USER_TOKEN}
+      - WHATSAPP_FACEBOOK_BUSINESS_ID=${WHATSAPP_FACEBOOK_BUSINESS_ID}
+      - ALLOWED_WHATSAPP_FACEBOOK_BUSINESS_IDS=${ALLOWED_WHATSAPP_FACEBOOK_BUSINESS_IDS}
     ports:
       - 8000:8000
     networks:
-      - HOST_NAME
-  celery_base_HOST_NAME:
+      - frontend
+  celery_base:
     restart: always
     image: rapidpro:${RAPIDPRO_VERSION:-7.4.2}
-    container_name: celery_base_HOST_NAME
+    container_name: celery_base_${HOSTNAME:-localhost}
     depends_on:
-      - rapidpro_HOST_NAME
+      - rapidpro
     links:
-      - redis_HOST_NAME
-      - postgresql_HOST_NAME
-      - mailroom_HOST_NAME
+      - redis
+      - postgresql
+      - mailroom
     environment:
-      - DATABASE_URL=postgresql://postgres:temba@postgresql_HOST_NAME/temba?sslmode=disable
-      - REDIS_HOST="redis_HOST_NAME"
+      - TESTING=${TESTING:-True}
+      - DATABASE_URL=postgresql://postgres:temba@postgresql/temba?sslmode=disable
+      - REDIS_HOST=redis_${HOSTNAME:-localhost}
       - REDIS_PORT=6379
       - REDIS_DB=15
-      - REDIS_URL=redis://redis_HOST_NAME:6379/15
+      - REDIS_URL=redis://${REDIS_HOST}:${REDIS_PORT}/${REDIS_DB}
       - SECRET_KEY=${SECRET_KEY:-changeme}
-      - SEND_EMAILS=${SEND_EMAILS:-off}
-      - SEND_MESSAGES=${SEND_MESSAGES:-off}
-      - SEND_AIRTIME=${SEND_AIRTIME:-off}
-      - SEND_CALLS=${SEND_CALLS:-off}
-      - SEND_WEBHOOKS=${SEND_WEBHOOKS:-off}
-      - IS_PROD=${IS_PROD:-off}
-      - API_THROTTLE_V2=${API_THROTTLE_V2:-2500/hour}
-      - API_THROTTLE_V2_CONTACTS=${API_THROTTLE_V2_CONTACTS:-2500/hour}
-      - API_THROTTLE_V2_MESSAGES=${API_THROTTLE_V2_MESSAGES:-2500/hour}
-      - API_THROTTLE_V2_RUNS=${API_THROTTLE_V2_RUNS:-2500/hour}
-      - API_THROTTLE_V2_API=${API_THROTTLE_V2_API:-2500/hour}
-      - API_THROTTLE_V2_BROADCASTS=${API_THROTTLE_V2_BROADCAST:-2500/hour}
+      - SEND_EMAILS=${SEND_EMAILS:-False}
+      - SEND_RECEIPTS=${SEND_RECEIPTS:-True}
     networks:
-      - HOST_NAME
+      - frontend
     command: ["/rapidpro/env/bin/celery", "--app=temba", "worker", "--loglevel=ERROR", "--queues=celery,flows"]
-  celery_msgs_HOST_NAME:
+  celery_msgs:
     restart: always
     image: rapidpro:${RAPIDPRO_VERSION:-7.4.2}
-    container_name: celery_msg_HOST_NAME
+    container_name: celery_msg_${HOSTNAME:-localhost}
     depends_on:
-      - rapidpro_HOST_NAME
+      - rapidpro
     links:
-      - redis_HOST_NAME
-      - postgresql_HOST_NAME
-      - mailroom_HOST_NAME
+      - redis
+      - postgresql
+      - mailroom
     environment:
-      - DATABASE_URL=postgresql://postgres:temba@postgresql_HOST_NAME/temba?sslmode=disable
-      - REDIS_HOST="redis_HOST_NAME"
+      - TESTING=${TESTING:-True}
+      - DATABASE_URL=postgresql://postgres:temba@postgresql/temba?sslmode=disable
+      - REDIS_HOST=redis_${HOSTNAME:-localhost}
       - REDIS_PORT=6379
       - REDIS_DB=15
-      - REDIS_URL=redis://redis_HOST_NAME:6379/15
+      - REDIS_URL=redis://${REDIS_HOST}:${REDIS_PORT}/${REDIS_DB}
       - SECRET_KEY=${SECRET_KEY:-changeme}
-      - SEND_EMAILS=${SEND_EMAILS:-off}
-      - SEND_MESSAGES=${SEND_MESSAGES:-off}
-      - SEND_AIRTIME=${SEND_AIRTIME:-off}
-      - SEND_CALLS=${SEND_CALLS:-off}
-      - SEND_WEBHOOKS=${SEND_WEBHOOKS:-off}
-      - IS_PROD=${IS_PROD:-off}
-      - API_THROTTLE_V2=${API_THROTTLE_V2:-2500/hour}
-      - API_THROTTLE_V2_CONTACTS=${API_THROTTLE_V2_CONTACTS:-2500/hour}
-      - API_THROTTLE_V2_MESSAGES=${API_THROTTLE_V2_MESSAGES:-2500/hour}
-      - API_THROTTLE_V2_RUNS=${API_THROTTLE_V2_RUNS:-2500/hour}
-      - API_THROTTLE_V2_API=${API_THROTTLE_V2_API:-2500/hour}
-      - API_THROTTLE_V2_BROADCASTS=${API_THROTTLE_V2_BROADCAST:-2500/hour}
+      - SEND_EMAILS=${SEND_EMAILS:-False}
+      - SEND_RECEIPTS=${SEND_RECEIPTS:-True}
     networks:
-      - HOST_NAME
+      - frontend
     command: ["/rapidpro/env/bin/celery", "--app=temba", "worker", "--loglevel=ERROR", "--queues=msgs,handler"]
 
-  redis_HOST_NAME:
+  redis:
     restart: always
     image: redis:alpine
-    container_name: redis_HOST_NAME
+    container_name: redis_${HOSTNAME:-localhost}
     networks:
-      - HOST_NAME
+      - frontend
 
-  postgresql_HOST_NAME:
+  postgresql:
     restart: always
     image: mdillon/postgis:11
-    container_name: postgresql_HOST_NAME
+    container_name: postgresql_${HOSTNAME:-localhost}
     environment:
       - POSTGRES_DB=temba
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
     networks:
-      - HOST_NAME
+      - frontend
 
-  mailroom_HOST_NAME:
+  mailroom:
     restart: always
-    image: mailroom:${MAILROOM_VERSION:-6.2.3}
-    container_name: mailroom_HOST_NAME
+    image: mailroom:${MAILROOM_VERSION:-7.4.1}
+    container_name: mailroom${MAILROOM_VERSION:-7.4.1}_${HOSTNAME:-localhost}
     build:
       context: ./mailroom-docker
       args:
-        - MAILROOM_VERSION=${MAILROOM_VERSION:-6.2.3}
+        - MAILROOM_VERSION=${MAILROOM_VERSION:-7.4.1}
     links:
-      - redis_HOST_NAME
-      - postgresql_HOST_NAME
+      - redis
+      - postgresql
     volumes:
       - ./logs/mailroom:/var/log/mailroom
     environment:
       - MAILROOM_ADDRESS=0.0.0.0
-      - MAILROOM_DB=postgres://postgres:temba@postgresql_HOST_NAME/temba?sslmode=disable
-      - MAILROOM_REDIS=redis://redis_HOST_NAME:6379/15
+      - MAILROOM_DB=postgres://postgres:temba@postgresql/temba?sslmode=disable
+      - REDIS_HOST=redis_${HOSTNAME:-localhost}
+      - REDIS_PORT=6379
+      - REDIS_DB=15
+      - REDIS_URL=redis://${REDIS_HOST}:${REDIS_PORT}/${REDIS_DB}
+      - MAILROOM_REDIS=redis://${REDIS_HOST}:${REDIS_PORT}/${REDIS_DB}
       - MAILROOM_ELASTIC=http://elastic:changeme@elasticsearch:9200
       - MAILROOM_SMTP_SERVER=${MAILROOM_SMTP_SERVER:-smtp://user%40password@server:port/?from=foo%40gmail.com}
       - MAILROOM_DOMAIN=${RAPIDPRO_HOST:-localhost}
@@ -173,46 +180,58 @@ services:
       - MAILROOM_S3_MEDIA_PREFIX=mailroom
       - MAILROOM_S3_MEDIA_BUCKET=${MAILROOM_S3_MEDIA_BUCKET:-mailroom}
       - MAILROOM_AUTH_TOKEN=${MAILROOM_AUTH_TOKEN:-changeme}
-      - MAILROOM_LOG_LEVEL=${MAILROOM_LOG_LEVEL:-error}
+      - MAILROOM_LOG_LEVEL=${MAILROOM_LOG_LEVEL:-debug}
     ports:
       - 8090:8090
     networks:
-      - HOST_NAME
+      - frontend
 
-  courier_HOST_NAME:
+  courier:
     restart: always
-    image: courier:${COURIER_VERSION:-6.2.0}
-    container_name: courier_HOST_NAME
+    image: courier:${COURIER_VERSION:-7.4.0}
+    container_name: courier${COURIER_VERSION:-7.4.0}_${HOSTNAME:-localhost}
     build:
       context: ./courier-docker
       args:
-        - COURIER_VERSION=${COURIER_VERSION:-6.2.0}
+        - COURIER_VERSION=${COURIER_VERSION:-7.4.0}
     depends_on:
-      - rapidpro_HOST_NAME
+      - rapidpro
     links:
-      - redis_HOST_NAME
-      - postgresql_HOST_NAME
+      - redis
+      - postgresql
     volumes:
       - ./logs/courier:/var/log/courier
     environment:
       - COURIER_DOMAIN=${RAPIDPRO_HOST:-localhost}
       - COURIER_SPOOL_DIR=/tmp/courier/
       - COURIER_PORT=8081
-      - COURIER_DB=postgres://postgres:temba@postgresql_HOST_NAME/temba?sslmode=disable
-      - COURIER_REDIS=redis://redis_HOST_NAME:6379/15
+      - COURIER_DB=postgres://postgres:temba@postgresql/temba?sslmode=disable
+      - REDIS_HOST=redis_${HOSTNAME:-localhost}
+      - REDIS_PORT=6379
+      - REDIS_DB=15
+      - REDIS_URL=redis://${REDIS_HOST}:${REDIS_PORT}/${REDIS_DB}
+      - COURIER_REDIS=redis://${REDIS_HOST}:${REDIS_PORT}/${REDIS_DB}
       - COURIER_AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-changeme}
       - COURIER_AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-changeme}
       - COURIER_S3_REGION=${AWS_S3_REGION_NAME:-changeme}
       - COURIER_S3_MEDIA_PREFIX=courier
       - COURIER_S3_MEDIA_BUCKET=${COURIER_S3_MEDIA_BUCKET:-changeme}
-      - COURIER_LOG_LEVEL=${COURIER_LOG_LEVEL:-error}
+      - COURIER_LOG_LEVEL=${COURIER_LOG_LEVEL:-debug}
+      - FACEBOOK_APPLICATION_ID=${FACEBOOK_APPLICATION_ID}
+      - FACEBOOK_APPLICATION_SECRET=${FACEBOOK_APPLICATION_SECRET}
+      - FACEBOOK_WEBHOOK_SECRET=${FACEBOOK_WEBHOOK_SECRET}
+      - COURIER_FACEBOOK_APPLICATION_ID=${FACEBOOK_APPLICATION_ID}
+      - COURIER_FACEBOOK_APPLICATION_SECRET=${FACEBOOK_APPLICATION_SECRET}
+      - COURIER_FACEBOOK_WEBHOOK_SECRET=${FACEBOOK_WEBHOOK_SECRET}
     ports:
       - 8081:8081
     networks:
-      - HOST_NAME
-      
+      - frontend
+
 volumes:
     sitestatic-volume:
+
 networks:
-  HOST_NAME:
+  frontend:
+    name: network_${HOSTNAME:-localhost}
     driver: bridge
