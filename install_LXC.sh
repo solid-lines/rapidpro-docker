@@ -256,7 +256,7 @@ fi
 
 
 # Remove NAT rule from UFW
-ufw reset
+yes | ufw reset
 DATE=$(date '+%Y%m%d')
 USERRULES=$(ls /etc/ufw/user.rules.${DATE}*)
 USER6RULES=$(ls /etc/ufw/user6.rules.${DATE}*)
