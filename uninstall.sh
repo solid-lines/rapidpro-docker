@@ -24,6 +24,9 @@ for items in $RP_CONTAINERS; do
 done
 yes | docker system prune
 
+echo "Removing database volume..."
+rm -rf $(pwd)/data
+
 echo "Removing Nginx locations..."
 rm /etc/nginx/upstream/${HOSTNAME}.conf
 service nginx restart
