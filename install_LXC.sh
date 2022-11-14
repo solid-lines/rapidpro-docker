@@ -153,8 +153,8 @@ CONTAINERS=$(lxc list -f json | jq -r '.[] | select((.status=="Running") and (.c
 
 cat <<EOF > /etc/nginx/upstream/$HOST_CONTAINER.conf
 server {
-	if ($host = $HOST_CONTAINER) {
-		return 301 https://$host$request_uri;
+	if (\$host = $HOST_CONTAINER) {
+		return 301 https://\$host\$request_uri;
 	}
 
 	server_name  $HOST_CONTAINER;
