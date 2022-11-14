@@ -168,10 +168,16 @@ fi
 HOSTNAME="$1"
 HOSTNAME_ENV=$(grep HOSTNAME .env | awk -F '=' '{printf $2}')
 
-CONTAINERS=$(docker container ls | grep '_${HOSTNAME}' | awk '{printf $2"\n" }' | sort | uniq | awk -F ':' '{print $1":"$2" "}')
+CONTAINERS=$(docker ps | grep "_${HOSTNAME}")
+CONTAINERS_ENV=$(docker ps | grep "_${HOSTNAME_ENV}")
 
 if [[ $CONTAINERS != "" ]]; then
-  echo "Rapidpro containers are already running with hostname: ${HOSTNAME}" 
+  echo "Rapidpro containers are already running with provided hostname: ${HOSTNAME}" 
+  exit 1
+fi
+
+if [[ $CONTAINERS_ENV != "" ]]; then
+  echo "Rapidpro containers are already running with current hostname in .env: ${HOSTNAME_ENV}" 
   exit 1
 fi
 
