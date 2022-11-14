@@ -270,9 +270,6 @@ echo "Configuring nginx"
 if ! which nginx 1>/dev/null; then
   apt update && apt install nginx -y
   install_nginx
-  install_upstream
-else
-  install_upstream
 fi
 
 if ! which certbot 1>/dev/null; then
@@ -285,6 +282,7 @@ if ! which certbot 1>/dev/null; then
   if ! certbot certonly -d $HOST_CONTAINER --standalone -m daniel.castelao@solidlines.io --agree-tos -n --no-eff-email; then
     errout "Failed when installing certificate"
   fi
+  install_upstream
   service nginx start
 else
   service nginx stop
@@ -294,6 +292,7 @@ else
   if ! certbot certonly -d $HOST_CONTAINER --standalone -m daniel.castelao@solidlines.io --agree-tos -n --no-eff-email; then
     errout "Failed when installing certificate"
   fi
+  install_upstream
   service nginx start
 fi
 
