@@ -304,3 +304,4 @@ npm install pm2@latest -g
 env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u root --hp /opt
 
 echo "Successfully installed rapidpro. Create superuser executing ./createsuperuser.sh"
+echo "Please, restart the server to be sure all firewall rules have been applied."
