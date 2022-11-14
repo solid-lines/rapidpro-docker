@@ -7,7 +7,6 @@ if ! docker-compose down; then
 fi
 
 echo "Removing Rapidpro docker images..."
-
 for items in $RP_CONTAINERS; do
   REPO=$(echo $items | awk -F ':' '{print $1}')
   TAG=$(echo $items | awk -F ':' '{print $2}')
@@ -17,3 +16,8 @@ for items in $RP_CONTAINERS; do
     echo "Failed docker image rm ${IMAGE_ID} -f"
   fi
 done
+
+echo "Removing Nginx locations..."
+HOSTNAME=$(grep HOSTNAME .env | awk -F '=' '{printf $2}')
+rm /etc/nginx/upstream/${HOSTNAME}.conf
+service nginx restart
