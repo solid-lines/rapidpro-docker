@@ -21,7 +21,7 @@ services:
     environment:
       - TESTING=${TESTING:-True}
       - DOMAIN_NAME=${RAPIDPRO_HOST:-localhost}
-      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-[\"localhost\"]}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-["localhost"]}
       - TEMBA_HOST=${TEMBA_HOST:-localhost}
       - DEBUG=${DEBUG:-False}
       - DATABASE_URL=postgresql://postgres:temba@postgresql/temba?sslmode=disable
