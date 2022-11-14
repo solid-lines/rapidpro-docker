@@ -169,7 +169,7 @@ EOF
 for CONTAINER in $CONTAINERS; do
 lxc exec ${CONTAINER} -- ufw allow 8080/tcp
 lxc exec ${CONTAINER} -- ufw reload
-IP=$(lxc list | grep $CONTAINER | awk '{print $6}')
+IP=$(lxc list | grep " "$CONTAINER" " | awk '{print $6}')
 cat <<EOF >> /etc/nginx/upstream/$HOST_CONTAINER.conf
 	location /${CONTAINER} {
 		proxy_pass http://${IP}:8080/${CONTAINER};
