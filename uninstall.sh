@@ -1,6 +1,7 @@
 #!/bin/bash
 
-RP_CONTAINERS=$(docker container ls | grep rapidpro_ | awk '{printf $2"\n" }' | sort | uniq | awk -F ':' '{print $1":"$2" "}')
+HOSTNAME=$(grep HOSTNAME .env | awk -F '=' '{printf $2}')
+RP_CONTAINERS=$(docker container ls | grep ${HOSTNAME} | awk '{printf $2"\n" }' | sort | uniq | awk -F ':' '{print $1":"$2" "}')
 echo "Stopping Rapidpro docker containers..."
 if ! docker-compose down; then
   echo "Failed docker-compose down"
@@ -16,8 +17,8 @@ for items in $RP_CONTAINERS; do
     echo "Failed docker image rm ${IMAGE_ID} -f"
   fi
 done
+yes | docker system prune
 
 echo "Removing Nginx locations..."
-HOSTNAME=$(grep HOSTNAME .env | awk -F '=' '{printf $2}')
 rm /etc/nginx/upstream/${HOSTNAME}.conf
 service nginx restart
