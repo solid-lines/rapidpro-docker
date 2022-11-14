@@ -260,8 +260,8 @@ ufw reset
 DATE=$(date '+%Y%m%d')
 USERRULES=$(ls /etc/ufw/user.rules.${DATE}*)
 USER6RULES=$(ls /etc/ufw/user6.rules.${DATE}*)
-cp /etc/ufw/${USERRULES} /etc/ufw/user.rules
-cp /etc/ufw/${USER6RULES} /etc/ufw/user6.rules
+cp ${USERRULES} /etc/ufw/user.rules
+cp ${USER6RULES} /etc/ufw/user6.rules
 ufw disable && yes | ufw enable
 
 HOST_CONTAINER=$(cd / && find . -name containers.json | grep dhis2-tools-ng | tail -1 | xargs cat | jq -r .fqdn)
