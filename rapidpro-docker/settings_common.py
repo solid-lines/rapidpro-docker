@@ -29,12 +29,12 @@ if SENTRY_DSN:  # pragma: no cover
 # -----------------------------------------------------------------------------------
 # Default to debugging
 # -----------------------------------------------------------------------------------
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", True)
 
 # -----------------------------------------------------------------------------------
 # Sets TESTING to True if this configuration is read during a unit test
 # -----------------------------------------------------------------------------------
-TESTING = sys.argv[1:2] == ["test"]
+TESTING = os.environ.get("TESTING", True) #sys.argv[1:2] == ["test"]
 
 if TESTING:
     PASSWORD_HASHERS = ("django.contrib.auth.hashers.MD5PasswordHasher",)
@@ -57,35 +57,35 @@ POSTGIS_VERSION = (2, 1)
 # set the mail settings, override these in your settings.py
 # if your site was at http://temba.io, it might look like this:
 # -----------------------------------------------------------------------------------
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = "server@temba.io"
-DEFAULT_FROM_EMAIL = "server@temba.io"
-EMAIL_HOST_PASSWORD = "mypassword"
-EMAIL_USE_TLS = True
-EMAIL_TIMEOUT = 10
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "server@temba.io")
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "server@temba.io")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "mypassword")
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", True)
+EMAIL_TIMEOUT = os.environ.get("EMAIL_TIMEOUT", 10)
 
 # Used when sending email from within a flow and the user hasn't configured
 # their own SMTP server.
-FLOW_FROM_EMAIL = "Temba <no-reply@temba.io>"
+FLOW_FROM_EMAIL = os.environ.get("FLOW_FROM_EMAIL", "Temba <no-reply@temba.io>")
 
 # HTTP Headers using for outgoing requests to other services
 OUTGOING_REQUEST_HEADERS = {"User-agent": "RapidPro"}
 
-STORAGE_URL = None  # may be an absolute URL to /media (like http://localhost:8000/media) or AWS S3
+STORAGE_URL = os.environ.get("STORAGE_URL", None)  # may be an absolute URL to /media (like http://localhost:8000/media) or AWS S3
 STORAGE_ROOT_DIR = "test_orgs" if TESTING else "orgs"
 
 # -----------------------------------------------------------------------------------
 # AWS S3 storage used in production
 # -----------------------------------------------------------------------------------
-AWS_ACCESS_KEY_ID = "aws_access_key_id"
-AWS_SECRET_ACCESS_KEY = "aws_secret_access_key"
-AWS_DEFAULT_ACL = "private"
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "aws_access_key_id")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "aws_secret_access_key")
+AWS_DEFAULT_ACL = os.environ.get("AWS_DEFAULT_ACL", "private")
 
-AWS_STORAGE_BUCKET_NAME = "dl-temba-io"
+AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME", "dl-temba-io")
 AWS_BUCKET_DOMAIN = AWS_STORAGE_BUCKET_NAME + ".s3.amazonaws.com"
 
 # bucket where archives files are stored
-ARCHIVE_BUCKET = "dl-temba-archives"
+ARCHIVE_BUCKET = os.environ.get("ARCHIVE_BUCKET", "dl-temba-archives")
 
 # -----------------------------------------------------------------------------------
 # On Unix systems, a value of None will cause Django to use the same
@@ -142,7 +142,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = "your own secret key"
+SECRET_KEY = os.environ.get("SECRET_KEY", "your own secret key")
 
 # -----------------------------------------------------------------------------------
 # Directory Configuration
@@ -986,8 +986,8 @@ OUTGOING_PROXIES = {}
 # -----------------------------------------------------------------------------------
 # Caching using Redis
 # -----------------------------------------------------------------------------------
-REDIS_HOST = "redis_HOST_NAME"
-REDIS_PORT = 6379
+REDIS_HOST = os.environ.get("REDIS_HOST", "redis")
+REDIS_PORT = os.environ.get("REDIS_PORT", 6379)
 REDIS_DB = 10 if TESTING else 15  # we use a redis db of 10 for testing so that we maintain caches for dev
 
 CACHES = {
@@ -1002,7 +1002,7 @@ CACHES = {
 # Async tasks using Celery
 # -----------------------------------------------------------------------------------
 CELERY_RESULT_BACKEND = None
-CELERY_BROKER_URL = "redis://%s:%d/%d" % (REDIS_HOST, REDIS_PORT, REDIS_DB)
+CELERY_BROKER_URL = "redis://%s:%d/%d" % (REDIS_HOST, int(REDIS_PORT), REDIS_DB)
 
 # by default, celery doesn't have any timeout on our redis connections, this fixes that
 CELERY_BROKER_TRANSPORT_OPTIONS = {"socket_timeout": 5}
@@ -1097,10 +1097,10 @@ for brand in BRANDING.values():
 ######
 # DANGER: only turn this on if you know what you are doing!
 #         could cause emails to be sent in test environment
-SEND_EMAILS = False
+SEND_EMAILS = os.environ.get("SEND_EMAILS", False)
 
 # Whether to send receipts on TopUp purchases
-SEND_RECEIPTS = True
+SEND_RECEIPTS = os.environ.get("SEND_RECEIPTS", True)
 
 INTEGRATION_TYPES = [
     "temba.orgs.integrations.dtone.DTOneType",
@@ -1289,8 +1289,8 @@ RETENTION_PERIODS = {
 # -----------------------------------------------------------------------------------
 # Mailroom
 # -----------------------------------------------------------------------------------
-MAILROOM_URL = None
-MAILROOM_AUTH_TOKEN = None
+MAILROOM_URL = os.environ.get("MAILROOM_URL", None)
+MAILROOM_AUTH_TOKEN = os.environ.get("MAILROOM_AUTH_TOKEN", None)
 
 # To allow manage fields to support up to 1000 fields
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 4000
@@ -1301,4 +1301,3 @@ MACHINE_HOSTNAME = socket.gethostname().split(".")[0]
 
 # ElasticSearch configuration (URL RFC-1738)
 ELASTICSEARCH_URL = os.environ.get("ELASTICSEARCH_URL", "http://localhost:9200")
-
