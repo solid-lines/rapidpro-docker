@@ -30,11 +30,10 @@ if SENTRY_DSN:  # pragma: no cover
 # Default to debugging
 # -----------------------------------------------------------------------------------
 DEBUG = os.environ.get("DEBUG", True)
-
 # -----------------------------------------------------------------------------------
 # Sets TESTING to True if this configuration is read during a unit test
 # -----------------------------------------------------------------------------------
-TESTING = os.environ.get("TESTING", True) #sys.argv[1:2] == ["test"]
+TESTING = sys.argv[1:2] == ["test"]
 
 if TESTING:
     PASSWORD_HASHERS = ("django.contrib.auth.hashers.MD5PasswordHasher",)
@@ -62,7 +61,8 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "server@temba.io")
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "server@temba.io")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "mypassword")
 EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", True)
-EMAIL_TIMEOUT = os.environ.get("EMAIL_TIMEOUT", 10)
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 587))
+EMAIL_TIMEOUT = int(os.environ.get("EMAIL_TIMEOUT", 10))
 
 # Used when sending email from within a flow and the user hasn't configured
 # their own SMTP server.
@@ -82,6 +82,7 @@ AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "aws_secret_acce
 AWS_DEFAULT_ACL = os.environ.get("AWS_DEFAULT_ACL", "private")
 
 AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME", "dl-temba-io")
+
 AWS_BUCKET_DOMAIN = AWS_STORAGE_BUCKET_NAME + ".s3.amazonaws.com"
 
 # bucket where archives files are stored
@@ -142,6 +143,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
+#SECRET_KEY = "your own secret key"
 SECRET_KEY = os.environ.get("SECRET_KEY", "your own secret key")
 
 # -----------------------------------------------------------------------------------
@@ -986,8 +988,8 @@ OUTGOING_PROXIES = {}
 # -----------------------------------------------------------------------------------
 # Caching using Redis
 # -----------------------------------------------------------------------------------
-REDIS_HOST = os.environ.get("REDIS_HOST", "redis")
-REDIS_PORT = os.environ.get("REDIS_PORT", 6379)
+REDIS_HOST = os.environ.get("REDIS_HOST", "redis_HOST_NAME")
+REDIS_PORT = int(os.environ.get("REDIS_PORT", 6379))
 REDIS_DB = 10 if TESTING else 15  # we use a redis db of 10 for testing so that we maintain caches for dev
 
 CACHES = {
@@ -1002,7 +1004,7 @@ CACHES = {
 # Async tasks using Celery
 # -----------------------------------------------------------------------------------
 CELERY_RESULT_BACKEND = None
-CELERY_BROKER_URL = "redis://%s:%d/%d" % (REDIS_HOST, int(REDIS_PORT), REDIS_DB)
+CELERY_BROKER_URL = "redis://%s:%d/%d" % (REDIS_HOST, REDIS_PORT, REDIS_DB)
 
 # by default, celery doesn't have any timeout on our redis connections, this fixes that
 CELERY_BROKER_TRANSPORT_OPTIONS = {"socket_timeout": 5}
