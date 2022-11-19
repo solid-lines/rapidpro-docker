@@ -13,16 +13,8 @@ if ! docker-compose down; then
 fi
 
 echo "Removing Rapidpro docker images..."
-for items in $RP_CONTAINERS; do
-  REPO=$(echo $items | awk -F ':' '{print $1}')
-  TAG=$(echo $items | awk -F ':' '{print $2}')
-  IMAGE_ID=$(docker images | grep $REPO | grep $TAG | awk '{print $3}')
-  echo "  Removing Image ID $IMAGE_ID, Repository:: $REPO, TAG: $TAG"
-  if ! docker image rm ${IMAGE_ID} -f; then
-    echo "Failed docker image rm ${IMAGE_ID} -f"
-  fi
-done
-yes | docker system prune
+docker rmi $(docker images -q -f dangling=true) &> /dev/null
+yes | docker system prune &> /dev/null
 
 echo "Removing database volume..."
 rm -rf $(pwd)/data
