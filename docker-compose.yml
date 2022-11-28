@@ -19,9 +19,9 @@ services:
       - postgresql
       - mailroom
     environment:
-      - TESTING=${TESTING:-True}
+      #- TESTING=${TESTING:-True}
       - DOMAIN_NAME=${RAPIDPRO_HOST:-localhost}
-      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-["localhost"]}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-[\"localhost\"]}
       - TEMBA_HOST=${TEMBA_HOST:-localhost}
       - DEBUG=${DEBUG:-False}
       - DATABASE_URL=postgresql://postgres:temba@postgresql/temba?sslmode=disable
@@ -49,6 +49,7 @@ services:
       - AWS_QUERYSTRING_AUTH=${AWS_QUERYSTRING_AUTH}
       - OSM_RELATION_IDS=${OSM_RELATION_IDS}
       - CDN_DOMAIN_NAME=${CDN_DOMAIN_NAME:-changeme}
+      - ALLOW_SIGNUPS=${ALLOW_SIGNUPS:-True}
       - EMAIL_HOST=${EMAIL_HOST:-example.com}
       - EMAIL_HOST_USER=${EMAIL_HOST_USER:-admin@example.com}
       - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD:-changeme}
@@ -58,12 +59,8 @@ services:
       - SEND_EMAILS=${SEND_EMAILS:-False}
       - SEND_RECEIPTS=${SEND_RECEIPTS:-True}
       - DJANGO_COMPRESSOR=${DJANGO_COMPRESSOR:-off}
-      - BRANDING_ALLOW_SIGNUPS=${BRANDING_ALLOW_SIGNUPS:-on}
-      - BRANDING_API_LINK=${BRANDING_API_LINK}
-      - BRANDING_LINK=${BRANDING_LINK}
-      - BRANDING_SPLASH=${BRANDING_SPLASH}
       - MAILROOM_URL=http://mailroom:8090
-      #- MAILROOM_AUTH_TOKEN=${MAILROOM_AUTH_TOKEN:-changeme}
+        #- MAILROOM_AUTH_TOKEN=${MAILROOM_AUTH_TOKEN:-changeme}
       - STORAGE_URL=${STORAGE_URL}
       - FLOW_FROM_EMAIL=${FLOW_FROM_EMAIL}
       - ELASTICSEARCH_URL=${ELASTICSEARCH_URL}
@@ -95,7 +92,7 @@ services:
       - postgresql
       - mailroom
     environment:
-      - TESTING=${TESTING:-True}
+      #- TESTING=${TESTING:-True}
       - DATABASE_URL=postgresql://postgres:temba@postgresql/temba?sslmode=disable
       - REDIS_HOST=redis_${HOSTNAME:-localhost}
       - REDIS_PORT=6379
@@ -118,7 +115,7 @@ services:
       - postgresql
       - mailroom
     environment:
-      - TESTING=${TESTING:-True}
+      #- TESTING=${TESTING:-True}
       - DATABASE_URL=postgresql://postgres:temba@postgresql/temba?sslmode=disable
       - REDIS_HOST=redis_${HOSTNAME:-localhost}
       - REDIS_PORT=6379
@@ -179,7 +176,7 @@ services:
       - MAILROOM_S3_REGION=${AWS_S3_REGION_NAME:-changeme}
       - MAILROOM_S3_MEDIA_PREFIX=mailroom
       - MAILROOM_S3_MEDIA_BUCKET=${MAILROOM_S3_MEDIA_BUCKET:-mailroom}
-      #- MAILROOM_AUTH_TOKEN=${MAILROOM_AUTH_TOKEN:-changeme}
+        #- MAILROOM_AUTH_TOKEN=${MAILROOM_AUTH_TOKEN:-changeme}
       - MAILROOM_LOG_LEVEL=${MAILROOM_LOG_LEVEL:-debug}
     ports:
       - 8090:8090
@@ -217,9 +214,6 @@ services:
       - COURIER_S3_MEDIA_PREFIX=courier
       - COURIER_S3_MEDIA_BUCKET=${COURIER_S3_MEDIA_BUCKET:-changeme}
       - COURIER_LOG_LEVEL=${COURIER_LOG_LEVEL:-debug}
-      - FACEBOOK_APPLICATION_ID=${FACEBOOK_APPLICATION_ID}
-      - FACEBOOK_APPLICATION_SECRET=${FACEBOOK_APPLICATION_SECRET}
-      - FACEBOOK_WEBHOOK_SECRET=${FACEBOOK_WEBHOOK_SECRET}
       - COURIER_FACEBOOK_APPLICATION_ID=${FACEBOOK_APPLICATION_ID}
       - COURIER_FACEBOOK_APPLICATION_SECRET=${FACEBOOK_APPLICATION_SECRET}
       - COURIER_FACEBOOK_WEBHOOK_SECRET=${FACEBOOK_WEBHOOK_SECRET}
