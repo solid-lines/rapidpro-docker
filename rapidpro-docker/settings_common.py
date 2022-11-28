@@ -346,7 +346,7 @@ BRANDING = {
         "favico": "brands/rapidpro/rapidpro.ico",
         "splash": "brands/rapidpro/splash.jpg",
         "logo": "brands/rapidpro/logo.png",
-        "allow_signups": True,
+        "allow_signups": False if os.environ.get("ALLOW_SIGNUPS") == 'False' else True,
         "flow_types": ["M", "V", "B", "S"],  # see Flow.FLOW_TYPES
         "location_support": True,
         "tiers": dict(multi_user=0, multi_org=0),
@@ -1099,10 +1099,10 @@ for brand in BRANDING.values():
 ######
 # DANGER: only turn this on if you know what you are doing!
 #         could cause emails to be sent in test environment
-SEND_EMAILS = os.environ.get("SEND_EMAILS", False)
+SEND_EMAILS = False if os.environ.get("SEND_EMAILS") == 'False' else True
 
 # Whether to send receipts on TopUp purchases
-SEND_RECEIPTS = os.environ.get("SEND_RECEIPTS", True)
+SEND_RECEIPTS = False if os.environ.get("SEND_RECEIPTS") == 'False' else True
 
 INTEGRATION_TYPES = [
     "temba.orgs.integrations.dtone.DTOneType",
