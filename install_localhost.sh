@@ -5,6 +5,9 @@ if [ $# -ne 1 ]; then
 	exit 1
 fi
 
+echo "Installing docker and docker-compose"
+apt update && apt install docker docker-compose jq unzip -y
+
 HOSTNAME="$1"
 HOSTNAME_ENV=$(grep HOSTNAME .env | awk -F '=' '{printf $2}')
 
@@ -20,9 +23,6 @@ if [[ $CONTAINERS_ENV != "" ]]; then
   echo "Rapidpro containers are already running with current hostname in .env: ${HOSTNAME_ENV}" 
   exit 1
 fi
-
-echo "Installing docker and docker-compose"
-apt update && apt install docker docker-compose jq unzip -y
 
 echo "Setting hostname: $HOSTNAME"
 sed -i "s/$HOSTNAME_ENV/$HOSTNAME/g" ./rapidpro-docker/settings.py ./rapidpro-docker/settings_common.py ./rapidpro-docker/stack/startup.sh .env ./docker-compose.yml
