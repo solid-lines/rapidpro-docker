@@ -19,7 +19,7 @@ RUN set -ex; \
   apt-get install -y --no-install-recommends wget; \
   rm -rf /var/lib/apt/lists/*; \
   \
-  wget -O rp-indexer.tar.gz "https://github.com/$RPINDEXER_REPO/releases/download/v$RPINDEXER_VERSION/rp-indexer_$RPINDEXER_VERSION_linux_amd64.tar.gz"; \
+  wget -O rp-indexer.tar.gz "https://github.com/${RPINDEXER_REPO}/releases/download/v${RPINDEXER_VERSION}/rp-indexer_${RPINDEXER_VERSION}_linux_amd64.tar.gz"; \
   mkdir /usr/local/src/rp-indexer; \
   tar -xzC /usr/local/src/rp-indexer -f rp-indexer.tar.gz; \
   \
