@@ -1,4 +1,4 @@
-FROM debian:stretch-slim
+FROM debian:bullseye-slim
 
 RUN set -ex; \
     addgroup --system mailroom; \
@@ -10,7 +10,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 ARG MAILROOM_REPO
-ENV MAILROOM_REPO ${MAILROOM_REPO:-nyaruka/mailroom}
+ENV MAILROOM_REPO ${MAILROOM_REPO:-rapidpro/mailroom}
 ARG MAILROOM_VERSION
 ENV MAILROOM_VERSION ${MAILROOM_VERSION:-7.4.1}
 
@@ -33,10 +33,14 @@ RUN set -ex; \
 EXPOSE 8090
 
 RUN mkdir -p /var/log/mailroom
+RUN chown -R mailroom:mailroom /var/log/mailroom
 # forward request and error logs to docker log collector
-RUN ln -sf /dev/stdout /var/log/mailroom/mailroom.log \
-    && ln -sf /dev/stderr /var/log/mailroom/mailroom.error
+#RUN ln -sf /dev/stdout /var/log/mailroom/mailroom.log \
+#    && ln -sf /dev/stderr /var/log/mailroom/mailroom.error
 USER mailroom
 
 ENTRYPOINT []
-CMD ["mailroom"]
+
+ARG MAILROOM_LOG_LEVEL
+ENV MAILROOM_LOG_LEVEL ${MAILROOM_LOG_LEVEL:-warning}
+CMD mailroom --debug-conf -log-level $MAILROOM_LOG_LEVEL > /var/log/mailroom/mailroom.log

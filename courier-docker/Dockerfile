@@ -31,11 +31,16 @@ RUN mkdir _storage && chown courier _storage
 RUN mkdir /var/spool/courier && chown courier /var/spool/courier
 
 RUN mkdir -p /var/log/courier
+RUN chown -R courier:courier /var/log/courier
 # forward request and error logs to docker log collector
-RUN ln -sf /dev/stdout /var/log/courier/courier.log \
-    && ln -sf /dev/stderr /var/log/courier/courier.error
+#RUN ln -sf /dev/stdout /var/log/courier/courier.log \
+#    && ln -sf /dev/stderr /var/log/courier/courier.error
 
 USER courier
 
 ENTRYPOINT []
-CMD ["courier"]
+
+ARG COURIER_LOG_LEVEL
+ENV COURIER_LOG_LEVEL ${COURIER_LOG_LEVEL:-warning}
+CMD courier --debug-conf -log-level $COURIER_LOG_LEVEL > /var/log/courier/courier.log
+

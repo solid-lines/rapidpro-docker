@@ -16,13 +16,13 @@ fi
 #/bin/bash -c 'source /rapidpro/env/bin/activate'
 if [ "x$MANAGEPY_INIT_DB" = "xon" ]; then
 	#/rapidpro/env/bin/python manage.py dbshell < init_db.sql
-	psql -U postgres -h postgresql_HOST_NAME -tc "SELECT 1 FROM pg_user WHERE usename = 'temba'" | grep -q 1 || psql -U postgres -h postgresql_HOST_NAME -c "CREATE USER temba WITH SUPERUSER encrypted password 'temba'"
-	psql -U postgres -h postgresql_HOST_NAME -tc "SELECT 1 FROM pg_database WHERE datname = 'temba'" | grep -q 1 || psql -U postgres -h postgresql_HOST_NAME -c "CREATE DATABASE temba WITH OWNER temba"
-	psql -U postgres -h postgresql_HOST_NAME -c "ALTER DATABASE temba OWNER TO temba"
-	psql -U postgres -h postgresql_HOST_NAME -d temba -c "CREATE EXTENSION IF NOT EXISTS postgis"
-	psql -U postgres -h postgresql_HOST_NAME -d temba -c "CREATE EXTENSION IF NOT EXISTS hstore"
-	psql -U postgres -h postgresql_HOST_NAME -d temba -c "CREATE EXTENSION IF NOT EXISTS postgis_topology"
-	psql -U postgres -h postgresql_HOST_NAME -d temba -c 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp"'
+	psql -U postgres -h postgresql_rapidpro742.solidlines.io -tc "SELECT 1 FROM pg_user WHERE usename = 'temba'" | grep -q 1 || psql -U postgres -h postgresql_rapidpro742.solidlines.io -c "CREATE USER temba WITH SUPERUSER encrypted password 'temba'"
+	psql -U postgres -h postgresql_rapidpro742.solidlines.io -tc "SELECT 1 FROM pg_database WHERE datname = 'temba'" | grep -q 1 || psql -U postgres -h postgresql_rapidpro742.solidlines.io -c "CREATE DATABASE temba WITH OWNER temba"
+	psql -U postgres -h postgresql_rapidpro742.solidlines.io -c "ALTER DATABASE temba OWNER TO temba"
+	psql -U postgres -h postgresql_rapidpro742.solidlines.io -d temba -c "CREATE EXTENSION IF NOT EXISTS postgis"
+	psql -U postgres -h postgresql_rapidpro742.solidlines.io -d temba -c "CREATE EXTENSION IF NOT EXISTS hstore"
+	psql -U postgres -h postgresql_rapidpro742.solidlines.io -d temba -c "CREATE EXTENSION IF NOT EXISTS postgis_topology"
+	psql -U postgres -h postgresql_rapidpro742.solidlines.io -d temba -c 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp"'
 fi
 if [ "x$MANAGEPY_MIGRATE" = "xon" ]; then
 	/rapidpro/env/bin/python manage.py migrate

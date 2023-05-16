@@ -1,4 +1,5 @@
 FROM debian:bullseye-slim as builder
+#FROM ubuntu:22.04 as builder
 
 ENV PIP_RETRIES=120 \
     PIP_TIMEOUT=400 \
@@ -15,6 +16,13 @@ RUN addgroup --system rapidpro; \
 # `geos`, `gdal`, and `proj` are needed for `manage.py download_geojson` and `manage.py import_geojson`
 # `npm` for static file generation
 RUN apt update && apt install postgresql-client libmagic-dev libpcre3 libgeos-c1v5 libgdal28 libproj19 bzip2 npm wget tar git nano software-properties-common bash-completion python3-virtualenv python3-dev python3-distutils python3-apt vim net-tools iputils-ping procps -y
+
+#RUN apt update && apt install sudo tzdata software-properties-common gnupg curl dirmngr apt-transport-https lsb-release ca-certificates -y
+#RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+#RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys F23C5A6CF475977595C89F51BA6932366A755776
+#RUN add-apt-repository --yes 'ppa:deadsnakes/ppa'
+#RUN apt update && apt install yarn nodejs nodejs-legacy libssl-dev postgresql-client libmagic-dev libpcre3 libgeos-c1v5 bzip2 wget tar git nano software-properties-common bash-completion python3.10-venv python3.10-dev python3.10-distutils python3-apt vim net-tools iputils-ping procps python3-pip -y
+
 
 WORKDIR /
 
@@ -37,8 +45,10 @@ ENV PATH="/rapidpro/env/bin:$PATH"
 ENV VIRTUAL_ENV="/rapidpro/env"
 
 # Install configuration related dependencies
-RUN pip install getenv django uwsgi
-RUN pip install poetry 
+RUN pip install getenv django uwsgi codecov
+#RUN pip install poetry 
+RUN pip install "poetry>=1.3.0,<1.4.0"
+RUN poetry add codecov
 RUN poetry install
 
 ENV UWSGI_VIRTUALENV=/rapidpro/env UWSGI_WSGI_FILE=temba/wsgi.py UWSGI_HTTP=:8000 UWSGI_MASTER=1 UWSGI_WORKERS=8 UWSGI_HARAKIRI=20

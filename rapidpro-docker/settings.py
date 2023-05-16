@@ -26,8 +26,8 @@ custom["name"] = "Custom Brand"
 custom["slug"] = "custom"
 custom["org"] = "Custom"
 custom["api_link"] = "http://custom-brand.io"
-custom["link"] = "https://HOST_NAME"
-custom["site"] = "https://HOST_NAME"
+custom["link"] = "https://rapidpro742.solidlines.io"
+custom["site"] = "https://rapidpro742.solidlines.io"
 custom["domain"] = "custom-brand.io"
 custom["email"] = "join@custom-brand.io"
 custom["support_email"] = "support@custom-brand.io"
@@ -114,5 +114,5 @@ warnings.filterwarnings(
 # -----------------------------------------------------------------------------------
 STATIC_URL = "/sitestatic/"
 
-CSRF_TRUSTED_ORIGINS = ["https://HOST_NAME"]
+CSRF_TRUSTED_ORIGINS = ["https://rapidpro742.solidlines.io"]
 

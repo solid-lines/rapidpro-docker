@@ -338,10 +338,10 @@ BRANDING = {
         "welcome_topup": 1000,
         "email": "join@rapidpro.io",
         "support_email": "support@rapidpro.io",
-        "link": "https://HOST_NAME",
+        "link": "https://rapidpro742.solidlines.io",
         "api_link": "https://api.rapidpro.io",
         "docs_link": "http://docs.rapidpro.io",
-        "domain": "HOST_NAME",
+        "domain": "rapidpro742.solidlines.io",
         "ticket_domain": "tickets.rapidpro.io",
         "favico": "brands/rapidpro/rapidpro.ico",
         "splash": "brands/rapidpro/splash.jpg",
@@ -964,7 +964,7 @@ _default_database_config = {
     "NAME": "temba",
     "USER": "temba",
     "PASSWORD": "temba",
-    "HOST": "postgresql_HOST_NAME",
+    "HOST": "postgresql_rapidpro742.solidlines.io",
     "PORT": "5432",
     "ATOMIC_REQUESTS": True,
     "CONN_MAX_AGE": 60,
@@ -988,7 +988,7 @@ OUTGOING_PROXIES = {}
 # -----------------------------------------------------------------------------------
 # Caching using Redis
 # -----------------------------------------------------------------------------------
-REDIS_HOST = os.environ.get("REDIS_HOST", "redis_HOST_NAME")
+REDIS_HOST = os.environ.get("REDIS_HOST", "redis_rapidpro742.solidlines.io")
 REDIS_PORT = int(os.environ.get("REDIS_PORT", 6379))
 REDIS_DB = 10 if TESTING else 15  # we use a redis db of 10 for testing so that we maintain caches for dev
 
