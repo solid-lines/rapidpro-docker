@@ -187,6 +187,9 @@ apt update && apt install docker docker-compose jq unzip -y
 echo "Setting hostname: $HOSTNAME"
 sed -i "s/$HOSTNAME_ENV/$HOSTNAME/g" ./rapidpro-docker/settings.py ./rapidpro-docker/settings_common.py ./rapidpro-docker/stack/startup.sh .env ./docker-compose.yml
 
+mkdir ./data/elastic ./logs/rapidpro ./logs/courier ./logs/mailroom ./logs/rp-indexer
+chown -R 777 ./data/elastic ./logs/rapidpro ./logs/courier ./logs/mailroom ./logs/rp-indexer
+
 echo "Building and creating docker containers"
 if ! docker-compose up --build -d; then
   errout "Failed docker-compose" 1>&2
